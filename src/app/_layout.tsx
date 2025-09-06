@@ -1,7 +1,7 @@
-import { Stack } from "expo-router";
-import { ThemeProvider, useTheme } from "../styles/ThemeContext";
-import Header from "../components/Header";
-import { View } from "react-native";
+import { Stack } from 'expo-router';
+import { ThemeProvider, useTheme } from '../styles/ThemeContext';
+import Header from '../components/Header';
+import { View } from 'react-native';
 
 function LayoutWithHeader() {
   const { toggleTheme } = useTheme();
