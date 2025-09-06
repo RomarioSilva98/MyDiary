@@ -1,16 +1,21 @@
-import { FlatList, View } from "react-native";
+import { View } from "react-native";
+import { useState } from "react";
 import { useNotes } from "../hooks/useNotes";
-import { Link } from "expo-router";
+import { FlatList } from "react-native";
 import NoteCard from "../components/NoteCard";
+import Header from "../components/Header";
 
 export default function Home() {
   const { notes } = useNotes();
+  const [dark, setDark] = useState(false);
+
+  function toggleTheme() {
+    setDark(!dark);
+  }
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
-      <Link href="/new" style={{ fontSize: 20, marginBottom: 10 }}>
-        ➕ Nova Anotação
-      </Link>
+    <View style={{ flex: 1, backgroundColor: dark ? "#111" : "#fff" }}>
+      <Header toggleTheme={toggleTheme} />
 
       <FlatList
         data={notes}
