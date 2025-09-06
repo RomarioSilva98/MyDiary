@@ -86,11 +86,11 @@ export default function Header({ toggleTheme }: Props) {
               setMenuVisible(false);
             }}
           >
-            <Text style={{ fontSize: 16 }}>🌙 Mudar Tema</Text>
+            <Text style={{ fontSize: 16 }}>☀️ Mudar Tema</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={{ padding: 12 }} onPress={handleLogout}>
-            <Text style={{ fontSize: 16 }}>🚪 Sair</Text>
+            <Text style={{ fontSize: 16 }}>⬅️ Voltar</Text>
           </TouchableOpacity>
         </View>
       </Modal>
