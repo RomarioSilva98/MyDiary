@@ -1,18 +1,25 @@
-import { Stack } from 'expo-router';
-import { ThemeProvider, useTheme } from '../styles/ThemeContext';
-import Header from '../components/Header';
-import { View } from 'react-native';
+// app/_layout.tsx
+import { Stack } from "expo-router";
+import { ThemeProvider, useTheme } from "../styles/ThemeContext";
+import Header from "../components/Header";
+import BottomBar from "../components/BottomBar";
+import { View } from "react-native";
 
-function LayoutWithHeader() {
+function LayoutWithHeaderAndBottom() {
   const { toggleTheme } = useTheme();
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Header fixo em todas as telas */}
+      {/* Header fixo */}
       <Header toggleTheme={toggleTheme} />
 
-      {/* Conteúdo das rotas */}
-      <Stack screenOptions={{ headerShown: false }} />
+      {/* Conteúdo das telas */}
+      <View style={{ flex: 1 }}>
+        <Stack screenOptions={{ headerShown: false }} />
+      </View>
+
+      {/* BottomBar fixo */}
+      <BottomBar />
     </View>
   );
 }
@@ -20,7 +27,7 @@ function LayoutWithHeader() {
 export default function RootLayout() {
   return (
     <ThemeProvider>
-      <LayoutWithHeader />
+      <LayoutWithHeaderAndBottom />
     </ThemeProvider>
   );
 }
