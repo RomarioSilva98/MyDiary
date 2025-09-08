@@ -7,7 +7,7 @@ import EmojiPicker from "../../components/EmojiPicker";
 
 export default function NoteDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { notes, updateNote, deleteNote } = useNotes();
+  const { notes, updateNote, deleteNote, loadNotes } = useNotes();
   const { theme } = useTheme();
   const router = useRouter();
 
@@ -36,12 +36,14 @@ export default function NoteDetail() {
 function handleSave() {
   if (!note) return;
   updateNote(note.id, title, content, mood);
-  router.back();
+  loadNotes();
+  router.replace("/");
 }
 
 function handleDelete() {
   if (!note) return;
   deleteNote(note.id);
+  loadNotes();
   router.replace("/");
 }
 
