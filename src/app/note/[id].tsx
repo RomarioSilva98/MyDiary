@@ -1,8 +1,9 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { useNotes } from "../../hooks/useNotes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "../../styles/ThemeContext";
+import EmojiPicker from "../../components/EmojiPicker";
 
 export default function NoteDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -12,8 +13,18 @@ export default function NoteDetail() {
 
   const note = notes.find((n) => n.id.toString() === id);
 
-  const [title, setTitle] = useState(note?.title || "");
-  const [content, setContent] = useState(note?.content || "");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [mood, setMood] = useState("😄");
+
+  // 🔑 Atualiza os estados quando a nota for carregada
+  useEffect(() => {
+    if (note) {
+      setTitle(note.title);
+      setContent(note.content);
+      setMood(note.mood);
+    }
+  }, [note]);
 
   if (!note) {
     return (
@@ -22,10 +33,9 @@ export default function NoteDetail() {
       </View>
     );
   }
-
 function handleSave() {
-  if (!note) return; // garante que não chama sem nota
-  updateNote(note.id, title, content, note.mood); // já com os 4 argumentos
+  if (!note) return;
+  updateNote(note.id, title, content, mood);
   router.back();
 }
 
@@ -38,6 +48,9 @@ function handleDelete() {
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.background, padding: 20 }}>
+      <Text style={{ fontSize: 18, marginBottom: 8, color: theme.text }}>
+        Título
+      </Text>
       <TextInput
         value={title}
         onChangeText={setTitle}
@@ -50,6 +63,10 @@ function handleDelete() {
           borderColor: "#ccc",
         }}
       />
+
+      <Text style={{ fontSize: 18, marginBottom: 8, color: theme.text }}>
+        Conteúdo
+      </Text>
       <TextInput
         value={content}
         onChangeText={setContent}
@@ -63,8 +80,14 @@ function handleDelete() {
           padding: 10,
           borderRadius: 6,
           height: 200,
+          marginBottom: 12,
         }}
       />
+
+      <Text style={{ fontSize: 18, marginBottom: 8, color: theme.text }}>
+        Como você se sente?
+      </Text>
+      <EmojiPicker selected={mood} onSelect={setMood} />
 
       <TouchableOpacity
         onPress={handleSave}
