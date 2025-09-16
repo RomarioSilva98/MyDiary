@@ -8,11 +8,7 @@ export default function LoginScreen({ onUnlock }: { onUnlock: () => void }) {
   const [storedPin, setStoredPin] = useState<string | null>(null);
 
   useEffect(() => {
-    // Carrega PIN salvo
     SecureStore.getItemAsync("user_pin").then(setStoredPin);
-
-    // Tenta biometria automaticamente
-    checkBiometrics();
   }, []);
 
   async function checkBiometrics() {
@@ -27,7 +23,11 @@ export default function LoginScreen({ onUnlock }: { onUnlock: () => void }) {
 
       if (result.success) {
         onUnlock();
+      } else {
+        Alert.alert("Erro", "Autenticação falhou");
       }
+    } else {
+      Alert.alert("Aviso", "Seu dispositivo não suporta biometria.");
     }
   }
 
@@ -48,7 +48,7 @@ export default function LoginScreen({ onUnlock }: { onUnlock: () => void }) {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", padding: 20 }}>
-      <Text style={{ fontSize: 18, marginBottom: 10 }}>Digite seu PIN</Text>
+      <Text style={{ fontSize: 18, marginBottom: 10, textAlign: "center" }}>Digite seu PIN</Text>
       <TextInput
         value={pin}
         onChangeText={setPin}
@@ -65,12 +65,21 @@ export default function LoginScreen({ onUnlock }: { onUnlock: () => void }) {
       />
 
       {storedPin ? (
-        <TouchableOpacity
-          onPress={handlePinLogin}
-          style={{ backgroundColor: "blue", padding: 12, borderRadius: 6 }}
-        >
-          <Text style={{ color: "white", textAlign: "center" }}>Entrar</Text>
-        </TouchableOpacity>
+        <>
+          <TouchableOpacity
+            onPress={handlePinLogin}
+            style={{ backgroundColor: "blue", padding: 12, borderRadius: 6, marginBottom: 10 }}
+          >
+            <Text style={{ color: "white", textAlign: "center" }}>Entrar com PIN</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={checkBiometrics}
+            style={{ backgroundColor: "purple", padding: 12, borderRadius: 6 }}
+          >
+            <Text style={{ color: "white", textAlign: "center" }}>Entrar com Biometria</Text>
+          </TouchableOpacity>
+        </>
       ) : (
         <TouchableOpacity
           onPress={saveNewPin}
